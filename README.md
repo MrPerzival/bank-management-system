@@ -1,128 +1,134 @@
-# 🏦 CLI-Based Banking Management System in Java
+# 🏦 Bank Management System (Java CLI)
 
-This is a **Java-based CLI Banking Management System** that simulates core functionalities of a real-world banking application. It supports user and admin roles, enables secure transactions, and is integrated with a relational database (MySQL) using JDBC. Designed to demonstrate object-oriented programming, database integration, and financial operations such as loans and fund transfers.
-
----
+This is a **Java-based Command-Line Interface (CLI) Bank Management System** that simulates key banking functionalities such as user registration, fund transfers, and loan management. It uses **MySQL** for data persistence and **JDBC** for database access, following object-oriented design principles.
 
 ## 📌 Features
 
-### 👤 User Features
-- Register and log in securely using email and password
-- View account balance and current account status
-- Deposit and withdraw funds
-- Transfer money to other registered users
-- Apply for loans (Regular and Balloon repayment types)
+### 👤 User Functions
+- Register and login with secure credentials
+- View current account balance and status
+- Deposit and withdraw money
+- Transfer funds to other accounts
+- Apply for loans (Regular & Balloon type)
 - View formatted transaction history
-- Repay loans manually
-- Auto EMI deduction for active regular loans at login
-- Logout and Exit functionality
+- Auto EMI deduction for regular loans on login
+- Manual EMI repayment
+- Logout and exit
 
-### 🛠️ Admin Features
-- Admin login using default credentials  
+### 🛠️ Admin Functions
+- Admin login  
   `Username:` `Banked`  
   `Password:` `ProjectDone`
-- View list of all registered users
-- View and manage all loan applications
-- Update account status: `ACTIVE`, `BLOCKED`, or `SUSPICIOUS`
-- Approve or reject user loan requests
-- Logout and Exit
+- View list of all users
+- View and manage loan applications
+- Approve or reject loans
+- Update account status (`ACTIVE`, `BLOCKED`, `SUSPICIOUS`)
+- Logout and exit
 
----
-
-## 🚧 Planned Features (Future Scope)
-- PDF generation for statements and transaction history
-- GUI implementation using Java Swing/JavaFX
-- Email notifications for approvals and alerts
-- Interest calculation on deposits and outstanding loans
-- Support for Fixed Deposits and customer complaint management
+## 🧭 Planned Features
+- PDF generation for statements
+- JavaFX/Swing GUI interface
+- Email notifications for events like loan approval
+- Interest calculation on savings
+- Fixed Deposits and complaint resolution
 
 ---
 
 ## 🗃️ Database Schema (MySQL)
 
 ### `users`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | INT (PK) | Unique user ID |
-| name | VARCHAR | Full name |
-| email | VARCHAR | Unique email address |
-| password | VARCHAR | Encrypted password |
-| pan_or_aadhaar | VARCHAR | KYC verification |
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT, PK | Unique user ID |
+| name | VARCHAR | User name |
+| email | VARCHAR (UNIQUE) | Login email |
+| password | VARCHAR | Encrypted |
+| pan_or_aadhaar | VARCHAR | KYC document |
 
 ### `accounts`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | INT (PK) | Account ID |
-| user_id | INT (FK) | Link to `users.id` |
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT, PK | Account ID |
+| user_id | INT, FK | Linked user |
 | balance | DOUBLE | Current balance |
-| status | VARCHAR | `ACTIVE`, `BLOCKED`, or `SUSPICIOUS` |
+| status | VARCHAR | ACTIVE / BLOCKED / SUSPICIOUS |
 
 ### `transactions`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | INT (PK) | Transaction ID |
-| account_id | INT (FK) | Linked account |
-| type | VARCHAR | Deposit, Withdrawal, Transfer |
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT, PK | Transaction ID |
+| account_id | INT, FK | Linked account |
+| type | VARCHAR | Deposit / Withdraw / Transfer |
 | amount | DOUBLE | Transaction amount |
-| timestamp | TIMESTAMP | Date/time of transaction |
+| timestamp | TIMESTAMP | Transaction time |
 
 ### `loans`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | INT (PK) | Loan ID |
-| user_id | INT (FK) | Loan applicant |
+| Column | Type | Description |
+|--------|------|-------------|
+| id | INT, PK | Loan ID |
+| user_id | INT, FK | Borrower |
 | amount | DOUBLE | Loan amount |
-| type | VARCHAR | `Regular`, `Balloon` |
-| status | VARCHAR | `Approved`, `Pending`, `Rejected` |
-| start_date | DATE | Loan start |
-| duration_months | INT | Duration |
-| emi | DOUBLE | EMI per month |
-| remaining_amount | DOUBLE | Outstanding balance |
+| type | VARCHAR | Regular / Balloon |
+| status | VARCHAR | Approved / Pending / Rejected |
+| start_date | DATE | Start date |
+| duration_months | INT | Loan term |
+| emi | DOUBLE | Calculated EMI |
+| remaining_amount | DOUBLE | Remaining balance |
 
 ---
 
-## 🔧 Tech Stack
+## 🧮 Key Calculations
 
-- **Language**: Java (OOP principles)
-- **Database**: MySQL
-- **Database Access**: JDBC
-- **IDE**: IntelliJ IDEA / Eclipse
-- **Version Control**: Git
-
----
-
-## 🧮 Calculation Logic
-
-- **EMI (Equated Monthly Installment)**  
+### 💸 EMI (Equated Monthly Installment)
+```math
 EMI = [P × R × (1 + R)^N] / [(1 + R)^N – 1]
-Where:  
-`P` = Loan Amount, `R` = Monthly Interest Rate, `N` = Number of Months
+P = Principal loan amount
 
-- **Balloon Loan Repayment**  
-Flexible schedule with smaller early payments and one large final payment. Interest recalculates monthly.
+R = Monthly interest rate
 
----
+N = Loan term in months
 
-## 🚀 Getting Started
+🎈 Balloon Repayment
+Partial payments in early months
 
-### 🔄 Prerequisites
-- Java 8 or later
-- MySQL Server
-- JDBC Connector for MySQL
+Large lump-sum final payment
 
-### 🧰 Setup Instructions
-1. **Clone this repository**
- ```bash
- git clone https://github.com/your-repo/banking-management-java.git
- cd banking-management-java
-Import SQL schema into MySQL
+Interest recalculated monthly on remaining principal
 
-Use banking_schema.sql from the project folder to create necessary tables.
+🚀 Getting Started
+🔧 Prerequisites
+Java JDK 8 or later
 
-Configure Database in Code
+MySQL Server
 
-Update DB URL, username, and password in DBConnection.java.
+MySQL JDBC Connector
+
+IDE (Eclipse/IntelliJ) or Terminal
+
+🧰 Setup Steps
+Clone the Repository
+git clone https://github.com/MrPerzival/bank-management-system.git
+cd bank-management-system
+Create the MySQL Database
+
+Import the SQL schema file from schema.sql (if provided) or create tables as per schema above.
+
+Configure Database Connection
+
+Edit the database credentials in DBConnection.java:
+private static final String URL = "jdbc:mysql://localhost:3306/YOUR_DB";
+private static final String USER = "root";
+private static final String PASSWORD = "your_password";
 
 Compile and Run
 javac *.java
 java Main
+
+🛠 Technologies Used
+Java (Object-Oriented Programming)
+
+JDBC (Java Database Connectivity)
+
+MySQL (Relational Database)
+
+Git & GitHub (Version Control)
